@@ -35,21 +35,15 @@ public class Tester {
     graph.add(new Triple(point1, nameProp, name1));
     graph.add(new Triple(point2, nameProp, name2));
     // Below query works in ISQL.
-    List<String> queries = new LinkedList<String> ();
-    queries.add("PREFIX base: <http://base.org#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>  SELECT ?s {?s base:name \"test_sensor\"}");
-    queries.add("PREFIX base: <http://base.org#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>  SELECT ?s {?s base:name \"test_sensor\"^^xsd:string}");
-    Iterator<String> qIter = queries.iterator();
     Boolean successFlag = false;
-    while (qIter.hasNext()) {
-      String qStr = qIter.next();
-      Query sparql = QueryFactory.create(qStr);
-      VirtuosoQueryExecution vqd = VirtuosoQueryExecutionFactory.create(sparql, graph);
-      ResultSet results = vqd.execSelect();
-      while (results.hasNext()) {
-        successFlag = true;
-        QuerySolution result = results.nextSolution();
-        System.out.println(result.get("s").toString());
-      }
+    String qStr = "PREFIX base: <http://base.org#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>  SELECT ?s {?s base:name \"test_sensor\"^^xsd:string}";
+    Query sparql = QueryFactory.create(qStr);
+    VirtuosoQueryExecution vqd = VirtuosoQueryExecutionFactory.create(sparql, graph);
+    ResultSet results = vqd.execSelect();
+    while (results.hasNext()) {
+      successFlag = true;
+      QuerySolution result = results.nextSolution();
+      System.out.println(result.get("s").toString());
     }
     if (successFlag) {
       System.out.println("success!");
